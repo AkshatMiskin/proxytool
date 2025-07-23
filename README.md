@@ -1,129 +1,143 @@
-ProxyTool
-ProxyTool is a simple CLI tool for managing proxy settings (npm, Git, system environment variables) on Windows using PowerShell. Designed for environments like campus networks, it helps set/unset proxies easily and efficiently, especially in setups like VSCode and terminal.
+# ProxyTool
 
-✨ Features
-✅ Set HTTP/HTTPS proxy for:
+**ProxyTool** is a simple command-line utility for setting and managing proxy settings for npm, Git, and system environment variables on Windows and VSCode using PowerShell. This tool helps you configure and unset proxies with ease, allowing you to manage your network settings directly from your terminal.
 
-npm
+---
 
-Git
+## Features
 
-System environment variables (via PowerShell script)
+- **Set Proxy**: Configure HTTP and HTTPS proxy for npm, Git, and environment variables with a single command.
+- **Unset Proxy**: Remove proxy settings from npm, Git, and environment variables.
+- **Check Proxy Status**: View the current proxy settings for npm, Git, and system environment variables.
 
-🔄 Unset previously set proxies
+---
 
-🔍 View current proxy configurations
+## Installation
 
-📦 Installation
-Install globally via npm:
+You can install **ProxyTool** globally from npm to use it on your system.
 
-bash
-Copy
-Edit
+```bash
 npm install -g @akshatmiskin/proxytool
-⚙️ Usage
-➕ Set Proxy
-bash
-Copy
-Edit
+```
+
+---
+
+## Usage
+
+### 1. Set Proxy
+
+To set a proxy for npm, Git, and environment variables, simply run:
+
+```bash
 proxytool set --http http://<your-proxy>:<port>
+```
+
 This will:
+- Write the proxy settings to a PowerShell script (`.proxyenv.ps1`).
+- Set npm and Git proxy settings.
+- Provide instructions to run the script to apply the environment variables to your terminal session.
 
-Configure proxy for npm and Git
+#### For **IIIT Allahabad** Students:
+If you're a student of **IIIT Allahabad**, the default proxy (http://172.31.2.4:8080) is already hardcoded. To set the proxy, just run:
 
-Create a PowerShell script (proxyenv.ps1) in your home directory
-
-Show instructions to apply the environment proxy immediately
-
-🎓 For IIIT Allahabad Users:
-Just run:
-
-bash
-Copy
-Edit
+```bash
 proxytool set
-It will auto-configure using the default proxy: http://172.31.2.4:8080.
+```
 
-⚠️ You’ll still need to authenticate in the browser once.
+This command will automatically set the proxy for npm, Git, and environment variables without needing to specify the proxy URL. But you will still need to login with your credentials in the browser once.
 
-➖ Unset Proxy
-bash
-Copy
-Edit
+### 2. Unset Proxy
+
+To remove the proxy settings for npm, Git, and environment variables, run:
+
+```bash
 proxytool unset
+```
+
 This will:
+- Remove the proxy settings from npm and Git.
+- Delete the `.proxyenv.ps1` file, if it exists.
 
-Remove proxy settings from npm and Git
+### 3. Check Proxy Status
 
-Delete the PowerShell proxy script (proxyenv.ps1)
+To view the current proxy settings, run:
 
-ℹ️ Check Proxy Status
-bash
-Copy
-Edit
+```bash
 proxytool status
-Outputs current settings for:
+```
 
-npm
+This will display:
+- npm proxy status
+- git proxy status
+- Environment proxy status
 
-Git
+---
 
-System environment variables
+## Prerequisites
 
-⚠️ PowerShell Execution Policy
-To apply system environment variables using a PowerShell script, ensure script execution is allowed.
+To use **ProxyTool** effectively, you may need to change your PowerShell execution policy to allow script execution. The default policy on Windows may block the running of scripts.
 
-🔐 Steps:
-Check current policy:
+### Setting Execution Policy
 
-powershell
-Copy
-Edit
-Get-ExecutionPolicy
-If it returns Restricted, proceed to the next step.
+1. **Check current execution policy**:
 
-Allow scripts:
+   Open PowerShell and run:
 
-powershell
-Copy
-Edit
-Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-Apply proxy settings:
+   ```powershell
+   Get-ExecutionPolicy
+   ```
 
-powershell
-Copy
-Edit
-. $env:USERPROFILE\proxyenv.ps1
-🛠️ Troubleshooting
-❓ npm proxy still not visible?
-If npm config get proxy returns nothing, manually set it using:
+   If the result is **Restricted**, you'll need to change it.
 
-bash
-Copy
-Edit
+2. **Set Execution Policy**:
+
+   To allow local scripts to run, set the execution policy to **RemoteSigned** by running the following command in **Administrator** mode:
+
+   ```powershell
+   Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+   ```
+
+   This will allow locally created scripts to run and require downloaded scripts to be signed by a trusted publisher.
+
+3. **Run the Script**:
+
+   After setting the execution policy, apply the proxy settings to your current PowerShell session by running:
+
+   ```powershell
+   . $env:USERPROFILE\proxyenv.ps1
+   ```
+
+---
+
+## Troubleshooting
+
+### **Proxy settings not showing in npm config**:
+
+If you notice that **npm config get proxy** returns `null` or `undefined`, it's possible that npm was not correctly configured. Ensure that the proxy URL is set by checking the `.npmrc` file, and manually updating it if necessary:
+
+```bash
 npm config set proxy http://<your-proxy>:<port>
 npm config set https-proxy http://<your-proxy>:<port>
-🤝 Contributing
-You're welcome to contribute!
+```
 
-Fork the repo
+---
 
-Create a new branch:
+## Contributing
 
-bash
-Copy
-Edit
-git checkout -b feature-branch
-Make your changes
+If you'd like to contribute to **ProxyTool**, feel free to submit issues or pull requests. Here's how you can contribute:
 
-Commit and push:
+1. Fork the repository.
+2. Clone your fork to your local machine.
+3. Create a new branch (`git checkout -b feature-branch`).
+4. Make your changes.
+5. Commit your changes (`git commit -am 'Add feature'`).
+6. Push to the branch (`git push origin feature-branch`).
+7. Open a pull request.
 
-bash
-Copy
-Edit
-git commit -m "Add feature"
-git push origin feature-branch
-Open a Pull Request 🚀
+---
 
-📄 License
-Licensed under the ISC License.
+## License
+
+This project is licensed under the ISC License.
+
+---
